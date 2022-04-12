@@ -39,6 +39,9 @@ void custTravelToBar(unsigned int custID)
 {
 	//TODO - synchronize
 	printf("Cust %u\t\t\t\t\t\t\t\t\t\t\t|\n", custID);
+	unsigned int travelTime = (rand()%4980 + 20) * 1000;
+	//printf("travel time = %d\n", travelTime);
+	usleep(travelTime);
 }
 
 
@@ -49,7 +52,10 @@ void custTravelToBar(unsigned int custID)
 void custArriveAtBar(unsigned int custID)
 {
 	//TODO - synchronize
+	sem_wait(barEmpty);
 	printf("\t\tCust %u\t\t\t\t\t\t\t\t\t|\n", custID);
+	sem_post(customerArrives);
+	now_serving = custID;
 }
 
 
@@ -60,6 +66,7 @@ void custPlaceOrder()
 {
 	//TODO - synchronize
 	printf("\t\t\t\tCust %u\t\t\t\t\t\t\t|\n", now_serving);
+	sem_post(customerOrders);
 }
 
 
@@ -70,6 +77,8 @@ void custBrowseArt()
 {
 	//TODO - synchronize
 	printf("\t\t\t\t\t\tCust %u\t\t\t\t\t|\n", now_serving);
+	unsigned int browseTime = (rand()%3997 + 3) * 1000;
+	usleep(browseTime);
 }
 
 
@@ -82,6 +91,9 @@ void custAtRegister()
 {
 	//TODO - synchronize
 	printf("\t\t\t\t\t\t\t\tCust %u\t\t\t|\n", now_serving);
+	sem_wait(drinkReady);
+	sem_post(customerPays);
+	sem_wait(paymentConfirmed);
 }
 
 
@@ -92,4 +104,5 @@ void custLeaveBar()
 {
 	//TODO - synchronize
 	printf("\t\t\t\t\t\t\t\t\t\tCust %u\t|\n", now_serving);
+	sem_post(barEmpty);
 }

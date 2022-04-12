@@ -13,4 +13,12 @@ int now_serving;	// customer's ID who is being served
 
 //TODO - declare some semaphores
 
+sem_t* barEmpty;
+sem_t* drinkReady;
+sem_t* paymentConfirmed;
+sem_t* customerArrives;
+sem_t* customerOrders;
+sem_t* customerPays;
+
+
 #endif /* GLOBALS_H_ */
